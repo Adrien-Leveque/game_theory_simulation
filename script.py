@@ -1,9 +1,12 @@
 import random
-
+import math
 
 # [00,01 pour le 0,01 pour le 1, 11]
 
-gains = [random.randint(50,250),random.randint(-50,100),random.randint(100,250),random.randint(-100,50)]
+gains = [50,0,100,0]
+iteration = 10000
+
+
 
 res_1 = 0
 res_2 = 0
@@ -68,6 +71,8 @@ strats = {
 
     }
 
+total_play = (len(strats)-1)*iteration
+
 choices = {
 "random":0,
     "always_0":0,
@@ -86,8 +91,8 @@ def game():
             res_1 = choose(strat_1)
             res_2 = choose(strat_2)
 
-            choices[strat_1]+=res_1/100
-            choices[strat_2] += res_2 / 100
+            choices[strat_1]+=res_1*100/total_play
+            choices[strat_2] += res_2*100/total_play
 
             #print(strat_1, strat_2)
             #print(res_1, res_2)
@@ -109,13 +114,13 @@ def game():
                 #print(f"{strat_1} : +{gains[3]} ; {strat_2} : +{gains[3]}")
                 strats[strat_1] += gains[3]
                 strats[strat_2] += gains[3]
-        """for i,n in enumerate(gains):
-            gains[i]+= random.randint(-20,20)"""
+
 
         #print(strats)
 
-for i in range(0,10000):
-    gains = [random.randint(50,250),random.randint(-50,100),random.randint(100,250),random.randint(-100,50)]
+
+for i in range(iteration):
+    #gains = [] #possible to change gains over time 
     game()
 
 sorted_by_values = dict(sorted(strats.items(), key=lambda item: item[1]))
@@ -123,4 +128,5 @@ sorted_by_values = dict(sorted(strats.items(), key=lambda item: item[1]))
 print(sorted_by_values)
 for name, score in sorted_by_values.items():
     print(f"{name} : {score} | {choices[name]}% de 1")
+
 
